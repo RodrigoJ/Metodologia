@@ -3,25 +3,24 @@
 #include<stdlib.h>
 #include<string.h>
 
-#define N 300000					//Tamaño del arreglo a ordenar
 
 
 //---------------------------------Generacion de los arreglos------------------
-void ordenado(int array[]){
+void ordenado(int array[], int N){
 	int i;
 
 	for(i=0; i < N; i++)
 		array[i] = i;
 }
 
-void ordenadoInverso(int array[]){
+void ordenadoInverso(int array[], int N){
 	int i;
 
 	for(i=0; i < N; i++)
 		array[i] = N - 1 - i;
 }
 
-void desordenado(int array[]){
+void desordenado(int array[], int N){
 	int i;
 
 	for(i=0; i < N; i++){
@@ -35,7 +34,7 @@ void desordenado(int array[]){
 //------------------------------------------------Estables--------------------
 
 //----------------------------------------------------------Burbuja----------
-void burbuja(int array[]){
+void burbuja(int array[], int N){
 	int i, j, temp;
 
 	for (i = (N - 1); i > 0; i--) {
@@ -51,7 +50,7 @@ void burbuja(int array[]){
 
 
 //----------------------------------------------------------Insersion----------
-void insercion(int array[]) {
+void insercion(int array[], int N) {
 	int i, j, indice;
 
 	for (i=1; i<N; i++) {
@@ -104,7 +103,7 @@ void quickSort(int array[], int b, int t)
 
 
 //-------------------------------------------------------seleccion------------
-void seleccion(int array[]) {
+void seleccion(int array[], int N) {
    int min,i,j,aux,ban;
 
    for(i=0 ; i < N-1 ; i++) {
@@ -127,28 +126,47 @@ void seleccion(int array[]) {
 
 //--------------------------------------main----------------------------------
 int main(){
-	int i;
+	int i, N;
+	int opcion, error = 0;
+
+	printf("Ingrese cantidad de elementos a ordenar: ");
+	scanf("%i", &N);
 
 	int array[N], array_aux[N];
 
 	time_t inicio, final;
 
 //-----------------------------iniciacion del array--------------------------
-// Descomentar el tipo de inicializacion
 
-//	ordenado(array);
-//	desordenado(array);
-	ordenadoInverso(array);
+	while (!error) {
+		printf("\n1) Ordenado\n2) Ordenado Inverso\n3) Desordenado\nIngrese su opcion: ");
+		scanf("%i", &opcion);
+
+
+			switch (opcion) {
+				case 1: ordenado(array, N);
+						error = 1;
+						break;
+				case 2: desordenado(array, N);
+						error = 1;
+						break;
+				case 3: ordenadoInverso(array, N);
+						error = 1;
+						break;
+				default: printf("\nOpcion no disponible\n");
+						break;
+			}
+	}
 
 //  Si se prueban todos los algoritmos a la vez, descomentar esta linea.
 //  Copia el array en array aux para utilizar el mismo array en cada prueba.
 
 	memcpy(array_aux, array, N*sizeof(int));
 
-//-----------------------------Algoritmos Estables----------------------------
+////-----------------------------Algoritmos Estables----------------------------
 
 	inicio = clock();
-	burbuja(array);
+	burbuja(array, N);
 	final = clock();
 
 	printf("tiempo burbuja: %f\n", difftime(final, inicio)/CLOCKS_PER_SEC);
@@ -156,12 +174,12 @@ int main(){
 
 	memcpy(array, array_aux, N*sizeof(int));
 	inicio = clock();
-	insercion(array);
+	insercion(array, N);
 	final = clock();
 
 	printf("tiempo insercion: %f\n", difftime(final, inicio)/CLOCKS_PER_SEC);
 
-//----------------------------Algoritmos Inestables---------------------------
+////----------------------------Algoritmos Inestables---------------------------
 	memcpy(array, array_aux, N*sizeof(int));
 	inicio = clock();
 	quickSort(array, 0, N - 1);
@@ -171,7 +189,7 @@ int main(){
 
 	memcpy(array, array_aux, N*sizeof(int));
 	inicio = clock();
-	seleccion(array);
+	seleccion(array, N);
 	final = clock();
 
 	printf("tiempo seleccion: %f\n", difftime(final, inicio)/CLOCKS_PER_SEC);
